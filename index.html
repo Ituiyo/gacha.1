@@ -213,21 +213,21 @@
             let rarityClass, rarityText, charIcon, charName;
 
             if (isTenjo) {
-                if (randomNumber <= 15) { randomNumber = 1; } else { randomNumber = 10; }
+                if (randomNumber <= 3) { randomNumber = 1; } else { randomNumber = 10; }
             }
 
             if (randomNumber <= 3) {
                 rarityClass = "rarity-ssr"; rarityText = "✨SSR✨"; 
-                charIcon = "<img src='1781121909523.png' class='char-img'>"; charName = "ゴッドドラゴン";
+                charIcon = "<img src='1781121909523.png' class='char-img'>"; charName = "いついよ";
                 collection.dragon = true;
                 hasSsrInThisGacha = true; 
             } else if (randomNumber <= 21) {
                 rarityClass = "rarity-sr"; rarityText = "⭐SR⭐"; 
-                charIcon = "<img src='1781122399877.png' class='char-img'>"; charName = "魔導師ネコ";
+                charIcon = "<img src='1781122399877.png' class='char-img'>"; charName = "ガチホモ";
                 collection.cat = true;
             } else {
                 rarityClass = "rarity-r"; rarityText = "R"; 
-                charIcon = "<img src='1781122784240.png' class='char-img'>"; charName = "スライム";
+                charIcon = "<img src='1781122784240.png' class='char-img'>"; charName = "犬もんたん";
                 collection.slime = true;
             }
 
