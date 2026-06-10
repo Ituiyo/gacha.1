@@ -65,13 +65,13 @@
             // 確率の判定（重み付きランダム）
             if (randomNumber <= 3) {
                 // 1〜3（3%の確率）ならSSR
-                resultDiv.innerHTML = "<span style='color: #ffa500;'>✨SSR✨<br></span>";
+                resultDiv.innerHTML = "<span style='color: #ffa500;'>✨SSR✨<br>3%</span>";
             } else if (randomNumber <= 21){
                 // 4〜21（18%の確率）ならSR
-                resultDiv.innerHTML = "<span style='color: #555;'>SR<br></span>";
+                resultDiv.innerHTML = "<span style='color: #9b59b6;'>︎🌟SR︎🌟<br>18%</span>";
             } else {
                 // 22〜100（79%の確率）ならR
-                resultDiv.innerHTML = "<span style='color: #555;'>R<br></span>";
+                resultDiv.innerHTML = "<span style='color: #555;'>R<br>79%</span>";
             }
         }
     </script>
