@@ -44,7 +44,9 @@
 
     <div class="container">
         <h1>単発ガチャ</h1>
-        <p>SSRが出る確率は 10% だよ！</p>
+        <p>SSRが出る確率は 3% だよ！</p>
+        <p>SRが出る確率は 18% だよ！</p>
+        <p>Rが出る確率は 79% だよ！</p>
         
         <button onclick="pullGacha()">ガチャを引く</button>
         
