@@ -1,1 +1,75 @@
-/
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>はじめてのガチャゲーム</title>
+    <style>
+        /* 画面のデザインを整える部分（CSS） */
+        body {
+            font-family: sans-serif;
+            text-align: center;
+            background-color: #f0f0f0;
+            padding-top: 50px;
+        }
+        .container {
+            background-color: white;
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        button {
+            font-size: 18px;
+            padding: 10px 30px;
+            background-color: #ff4757;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:active {
+            background-color: #ff6b81;
+        }
+        #result {
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 30px;
+            min-height: 40px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>単発ガチャ</h1>
+        <p>SSRが出る確率は 10% だよ！</p>
+        
+        <button onclick="pullGacha()">ガチャを引く</button>
+        
+        <div id="result">？？？</div>
+    </div>
+
+    <script>
+        // ガチャの中身と確率を計算する部分（JavaScript）
+        function pullGacha() {
+            // 1から100までのランダムな数字を作る
+            let randomNumber = Math.floor(Math.random() * 100) + 1;
+            
+            // 結果を表示するための画面の「枠」を取得する
+            let resultDiv = document.getElementById("result");
+
+            // 確率の判定（重み付きランダム）
+            if (randomNumber <= 10) {
+                // 1〜10（10%の確率）ならSSR
+                resultDiv.innerHTML = "<span style='color: #ffa500;'>✨SSR✨<br>伝説のドラゴン</span>";
+            } else {
+                // 11〜100（90%の確率）ならR
+                resultDiv.innerHTML = "<span style='color: #555;'>R<br>ぷるぷるスライム</span>";
+            }
+        }
+    </script>
+
+</body>
+</html>
