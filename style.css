@@ -1,8 +1,7 @@
-/* 🌟変更：ゲーム全体の背景に画像を設定（好きな画像URLに変えられます） */
 body { 
     font-family: sans-serif; 
     text-align: center; 
-    background-image: url('images/images/background/Seimonmae.png'); /* 👈 自分のフォルダ内の画像を指定！ */
+    background-image: url('images/bg.jpg'); 
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -10,7 +9,6 @@ body {
     padding: 20px 0;
 }
 
-/* 🌟変更：コンテナを少し半透明にして、背景がうっすら透ける高級感あるデザインに */
 .container { 
     background-color: rgba(255, 255, 255, 0.92); 
     max-width: 500px; 
@@ -20,39 +18,12 @@ body {
     box-shadow: 0 10px 30px rgba(0,0,0,0.3); 
 }
 
-/* 🌟追加：画面を切り替えるためのメニュー（タブ）ボタン */
-.menu-tabs {
-    display: flex;
-    justify-content: space-around;
-    margin-bottom: 20px;
-    background: #e4e7eb;
-    border-radius: 10px;
-    padding: 5px;
-}
-.tab-btn {
-    flex: 1;
-    background: none;
-    color: #555;
-    box-shadow: none !important;
-    transform: none !important;
-    padding: 10px;
-    margin: 0;
-    font-size: 15px;
-}
-.tab-btn.active {
-    background-color: #ff4757;
-    color: white;
-    border-radius: 8px;
-}
+.menu-tabs { display: flex; justify-content: space-around; margin-bottom: 20px; background: #e4e7eb; border-radius: 10px; padding: 5px; }
+.tab-btn { flex: 1; background: none; color: #555; box-shadow: none !important; transform: none !important; padding: 10px; margin: 0; font-size: 15px; }
+.tab-btn.active { background-color: #ff4757; color: white; border-radius: 8px; }
 
-/* 🌟追加：表示・非表示を切り替えるためのクラス */
-.page-area {
-    display: none; /* 普段は非表示 */
-    animation: fadeIn 0.4s ease-out;
-}
-.page-area.active {
-    display: block; /* activeクラスがついた方だけ表示 */
-}
+.page-area { display: none; animation: fadeIn 0.4s ease-out; }
+.page-area.active { display: block; }
 
 .button-area { margin: 15px 0; }
 button { font-size: 16px; font-weight: bold; padding: 12px 24px; margin: 5px; color: white; border: none; border-radius: 8px; cursor: pointer; box-shadow: 0 4px #999; }
@@ -65,6 +36,8 @@ button:active { box-shadow: 0 0 #999; transform: translateY(4px); }
 #total-count { color: #ff4757; font-size: 24px; }
 
 #result-area { margin-top: 20px; min-height: 50px; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+
+/* キャラクターカードのベース */
 .char-card { background: white; border: 2px solid #ddd; border-radius: 10px; padding: 10px; width: 100px; font-size: 14px; animation: popIn 0.3s ease-out; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
 
 .rarity-ssr { border-color: #ffa500; background: #fffde6; color: #ffa500; font-weight: bold;}
@@ -73,7 +46,32 @@ button:active { box-shadow: 0 0 #999; transform: translateY(4px); }
 
 .char-img { width: 70px; height: 70px; object-fit: contain; margin: 5px 0; }
 
-/* コレクション（図鑑）エリア */
+/* ーーー 🌟追加：1体ずつ見せる大画面演出用のデザイン ーーー */
+#gacha-animation-screen {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.85); z-index: 8888;
+    display: none; flex-direction: column; justify-content: center; align-items: center;
+}
+.animation-container {
+    position: relative; width: 100%; max-width: 400px; text-align: center;
+}
+/* 中央に大きく出すカードのサイズ変更 */
+#big-char-card {
+    width: 200px; padding: 25px; font-size: 18px; margin: 0 auto;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    transform: scale(1); animation: cardReveal 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+#big-char-card .char-img { width: 150px; height: 150px; }
+
+/* スキップボタンの見た目 */
+#skip-btn {
+    position: absolute; top: -60px; right: 20px;
+    background-color: rgba(255, 255, 255, 0.2); color: white;
+    font-size: 14px; padding: 8px 16px; box-shadow: none; border: 1px solid white;
+}
+#skip-btn:hover { background-color: rgba(255, 255, 255, 0.4); }
+
+/* 図鑑エリア */
 .collection-area { margin-top: 10px; }
 .zukan-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-top: 15px; }
 .zukan-item { font-size: 14px; color: #ccc; transition: all 0.5s; width: 100px; background: #fcfcfc; padding: 10px; border-radius: 10px; border: 1px solid #eee; }
@@ -89,6 +87,11 @@ button:active { box-shadow: 0 0 #999; transform: translateY(4px); }
 .cutin-text { color: #ffa500; font-size: 36px; font-weight: bold; text-shadow: 0 0 10px #fff, 0 0 20px #ffa500; margin-top: 20px; animation: pulseText 1s infinite alternate; }
 .flash-effect { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: white; opacity: 0; pointer-events: none; animation: flash 0.4s ease-out; }
 
+/* ーーー アニメーション設定 ーーー */
+@keyframes cardReveal {
+    0% { transform: scale(0.5) rotate(-10deg); opacity: 0; }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
 @keyframes slideInAndShake { 0% { transform: translateX(100%) scale(0.8); opacity: 0; } 70% { transform: translateX(-5%) scale(1.05); opacity: 1; } 100% { transform: translateX(0) scale(1); } }
 @keyframes pulseText { 0% { transform: scale(0.9); opacity: 0.8; } 100% { transform: scale(1.1); opacity: 1; } }
 @keyframes flash { 0% { opacity: 1; } 100% { opacity: 0; } }
