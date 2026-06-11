@@ -86,7 +86,7 @@ function startGacha(count) {
         }
         updateZukanDisplay();
 
-        if (hasSsrInThisGacha) { triggerCutin("images/dragon.png"); }
+        if (hasSsrInThisGacha) { triggerCutin("images/images/backgrounds/Kakutei.png"); }
     }, 800);
 }
 
