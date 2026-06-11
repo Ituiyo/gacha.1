@@ -1,23 +1,14 @@
+// ーーー 🌟マスターデータ（ピックアップ設定付き） ーーー
 const CHARACTER_LIST = [
-    { id: "ituiyo", name: "いついよ", rarity: "ssr", weight: 1, image: "images/SSR/Ituiyo.png" },
-    { id: "oidonn", name: "おいどん", rarity: "ssr", weight: 1, image: "images/SSR/Oidonn.png" },
-    { id: "oiko", name: "おい子", rarity: "ssr", weight: 1, image: "images/SSR/Oiko.png" },
-    { id: "odekunn", name: "おでくん", rarity: "ssr", weight: 1, image: "images/SSR/Odekunn.png" },
-    { id: "wanikani", name: "わにかに", rarity: "ssr", weight: 1, image: "images/SSR/Wanikani.png" },
-    { id: "wanipann", name: "わにパン", rarity: "ssr", weight: 1, image: "images/SSR/Wanipann.png" },
-    
-    { id: "gachihomo1", name: "ガチホモ1", rarity: "sr", weight: 3, image: "images/SR/Gachihomo1.png" },
-    { id: "gachihomo2", name: "ガチホモ2", rarity: "sr", weight: 3, image: "images/SR/Gachihomo2.png" },
-    { id: "gachihomo3", name: "ガチホモ3", rarity: "sr", weight: 3, image: "images/SR/Gachihomo3.png" },
-    { id: "gachihomo4", name: "ガチホモ4", rarity: "sr", weight: 3, image: "images/SR/Gachihomo4.png" },
-    { id: "gachihomo5", name: "ガチホモ5", rarity: "sr", weight: 3, image: "images/SR/Gachihomo5.png" },
-    { id: "gachihomo6", name: "ガチホモ6", rarity: "sr", weight: 3, image: "images/SR/Gachihomo6.png" },
-    { id: "gachihomo7", name: "ガチホモ7", rarity: "sr", weight: 3, image: "images/SR/Gachihomo7.png" },
-
-    { id: "inumontann", name: "犬もんたん", rarity: "r", weight: 73, image: "images/R/Inumontann.png" }
-
+    // 💡 新しく「pickupWeight」を追加しました！
+    // 同じレア度の中で、この数字が大きいキャラほど「ピックアップ（当たりやすい）」になります。
+    // 特に指定しない（通常確率）なら「1」にしておけばOKです。
+    { id: "", name: "", rarity: "ssr", image: "images/SSR/.png", pickupWeight: 1 },
+    { id: "", name: "", rarity: "sr", image: "images/SR/.png", pickupWeight: 1 },
+    { id: "", name: "", rarity: "r", image: "images/R/.png", pickupWeight: 1 },
 ];
 
+// 獲得した回数を記録するデータ
 let collectionCounters = {};
 CHARACTER_LIST.forEach(char => { collectionCounters[char.id] = 0; });
 
@@ -30,6 +21,7 @@ let bgm = new Audio('sounds/Wanikann.mp3');
 bgm.loop = true; 
 let isBgmPlaying = false;
 
+// 起動時に図鑑を自動で作る
 createZukanHTML();
 
 function toggleBGM() {
@@ -61,7 +53,7 @@ function startGacha(count) {
     resultArea.innerHTML = "<div class='loading-text'>⏳ 召喚中...</div>";
     hasSsrInThisGacha = false; 
     
-            setTimeout(() => {
+    setTimeout(() => {
         resultArea.innerHTML = ""; 
         for (let i = 0; i < count; i++) {
             let isTenjo = (count === 10 && i === 9);
@@ -74,28 +66,45 @@ function startGacha(count) {
     }, 800);
 }
 
+// ーーー 🌟 変更：ピックアップ（重み）対応の2段階抽選 ーーー
 function pullOneGacha(isTenjo) {
-    let randomNumber = Math.floor(Math.random() * 100) + 1;
+    let selectedRarity = "r"; 
+    let randomNumber = Math.floor(Math.random() * 100) + 1; 
+
+    // 【第1段階】レア度だけを固定確率で決める（ここは前回と同じ）
+    if (isTenjo) {
+        if (randomNumber <= 3) { selectedRarity = "ssr"; } else { selectedRarity = "sr"; }
+    } else {
+        if (randomNumber <= 3) { selectedRarity = "ssr"; } 
+        else if (randomNumber <= 21) { selectedRarity = "sr"; } 
+        else { selectedRarity = "r"; }
+    }
+
+    // 【第2段階】選ばれたレア度のキャラを集めて、「pickupWeight」を元に抽選する
+    let matchedChars = CHARACTER_LIST.filter(char => char.rarity === selectedRarity);
+
+    if (matchedChars.length === 0) { matchedChars = CHARACTER_LIST; }
+
+    // 対象キャラの pickupWeight の合計値を計算する
+    let totalPickupWeight = 0;
+    matchedChars.forEach(char => totalPickupWeight += char.pickupWeight);
+
+    // 合計値の中でサイコロを振る
+    let charRandomNumber = Math.floor(Math.random() * totalPickupWeight) + 1;
+    
     let selectedChar = null;
     let currentSum = 0;
     
-    let availableChars = CHARACTER_LIST;
-    if (isTenjo) {
-        availableChars = CHARACTER_LIST.filter(char => char.rarity !== "r");
-    }
-
-    let totalWeight = 0;
-    availableChars.forEach(char => totalWeight += char.weight);
-    randomNumber = Math.floor(Math.random() * totalWeight) + 1;
-
-    for (let char of availableChars) {
-        currentSum += char.weight;
-        if (randomNumber <= currentSum) {
+    // サイコロの目がどこに落ちたかでキャラを決定
+    for (let char of matchedChars) {
+        currentSum += char.pickupWeight;
+        if (charRandomNumber <= currentSum) {
             selectedChar = char;
             break;
         }
     }
 
+    // 獲得記録を増やす
     collectionCounters[selectedChar.id]++;
     if (selectedChar.rarity === "ssr") { hasSsrInThisGacha = true; }
 
