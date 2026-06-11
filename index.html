@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>整理整頓されたガチャゲーム</title>
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="cutin-screen" onclick="closeCutin()">
+        <div class="flash-effect"></div>
+        <img id="cutin-image" src="" class="cutin-char-img">
+        <div class="cutin-text">✨SSR降臨✨</div>
+        <p style="color: white; font-size: 12px; margin-top: 30px;">画面をタップして閉じる</p>
+    </div>
+
+    <div class="container">
+        <h1>演出強化版ガチャ</h1>
+        <p>10連ガチャの最後はSR以上確定！</p>
+        
+        <div>
+            <button class="btn-bgm" onclick="toggleBGM()">🎵 BGM 再生 / 停止</button>
+        </div>
+
+        <div class="counter-area">
+            累計ガチャ回数: <span id="total-count">0</span> 回
+        </div>
+        
+        <div class="button-area">
+            <button class="btn-single" onclick="startGacha(1)">1回ガチャ</button>
+            <button class="btn-multi" onclick="startGacha(10)">🔥10連ガチャ</button>
+        </div>
+        
+        <div id="result-area">結果はここにでるよ</div>
+
+        <div class="collection-area">
+            <h3>📜 キャラクター図鑑 📜</h3>
+            <div class="zukan-container" id="zukan-box"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
