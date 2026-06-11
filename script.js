@@ -1,8 +1,25 @@
 const CHARACTER_LIST = [
-    { id: "",name: "", rarity: "ssr", image: "images/SSR/.png", pickupWeight: 1 },
-    { id: "",name: "", rarity: "sr", image: "images/SR/.png", pickupWeight: 1 },
-    { id: "",name: "", rarity: "r", image: "images/R/.png", pickupWeight: 1 },
-    { id: "",name: "", rarity: "r", image: "images/R/.png", pickupWeight: 1 }
+    { id: "1",name: "いついよ", rarity: "ssr", image: "images/SSR/Ituiyo.png", pickupWeight: 1 },
+    { id: "2",name: "おいどん", rarity: "ssr", image: "images/SSR/Oidonn.png", pickupWeight: 1 },
+    { id: "3",name: "おいこ", rarity: "ssr", image: "images/SSR/Oiko.png", pickupWeight: 1 },
+    { id: "4",name: "おでくん", rarity: "ssr", image: "images/SSR/Odekunn.png", pickupWeight: 1 },
+    { id: "5",name: "ワニカニ", rarity: "ssr", image: "images/SSR/Wanikani.png", pickupWeight: 1 },
+    { id: "6",name: "ワニパン", rarity: "ssr", image: "images/SSR/Wanipann.png", pickupWeight: 1 },
+    
+    { id: "7",name: "郷田好男", rarity: "sr", image: "images/SR/Gachihomo1.png", pickupWeight: 1 },
+    { id: "8",name: "祭田武", rarity: "sr", image: "images/SR/Gachihomo2.png", pickupWeight: 1 },
+    { id: "9",name: "美神雄咲", rarity: "sr", image: "images/SR/Gachihomo3.png", pickupWeight: 1 },
+    { id: "10",name: "肩幅広三", rarity: "sr", image: "images/SR/Gachihomo4.png", pickupWeight: 1 },
+    { id: "11",name: "ギルティ村松", rarity: "sr", image: "images/SR/Gachihomo5.png", pickupWeight: 1 },
+    { id: "12",name: "ゴッド四宮", rarity: "sr", image: "images/SR/Gachihomo6.png", pickupWeight: 1 },
+    { id: "13",name: "山下光源", rarity: "sr", image: "images/SR/Gachihomo7.png", pickupWeight: 1 },
+    
+    { id: "14",name: "犬もんたん", rarity: "r", image: "images/R/Inumontann.png", pickupWeight: 1 },
+    { id: "15",name: "豚男", rarity: "r", image: "images/R/Butao.png", pickupWeight: 1 },
+    { id: "16",name: "ミニいついよ", rarity: "r", image: "images/R/MiniItuiyo.png", pickupWeight: 1 },
+    { id: "17",name: "もんた鹿", rarity: "r", image: "images/R/Montajika.png", pickupWeight: 1 },
+    { id: "18",name: "モンタニウス", rarity: "r", image: "images/R/Montaniusu.png", pickupWeight: 1 },
+    { id: "19",name: "ニコニコくん", rarity: "r", image: "images/R/Nikoniko.png", pickupWeight: 1 },
 ];
 
 let collectionCounters = {};
@@ -22,7 +39,7 @@ let seFanfare = new Audio('sounds/Kakuhenn.mp3');
 let bgm = new Audio('sounds/Wanikann.mp3'); // 通常時のBGM
 bgm.loop = true; 
 
-let gachaBgm = new Audio('sounds/gacha-bgm.mp3'); // 👈 追加：ガチャ演出中の専用BGM
+let gachaBgm = new Audio('sounds/gachabgm.mp3'); // 👈 追加：ガチャ演出中の専用BGM
 gachaBgm.loop = true;
 
 let isBgmPlaying = false;
@@ -222,7 +239,7 @@ function finishAnimation() {
     updateZukanDisplay();
 
     if (hasSsrInThisGacha) {
-        triggerCutin("images/dragon.png");
+        triggerCutin("images/images/background/Kakutei.png");
     }
 }
 
