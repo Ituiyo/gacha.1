@@ -2,7 +2,7 @@
 body { 
     font-family: sans-serif; 
     text-align: center; 
-    background-image: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1000&auto=format&fit=crop'); /* 綺麗なグラデーション背景 */
+    background-image: "images/images/backgrounds/Seimonmae.png"
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
