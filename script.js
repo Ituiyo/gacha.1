@@ -1,7 +1,34 @@
 const CHARACTER_LIST = [
-    { id: "dragon", name: "ゴッドドラゴン", rarity: "ssr", weight: 3,  image: "images/dragon.png" },
-    { id: "cat",    name: "魔導師ネコ",     rarity: "sr",  weight: 18, image: "images/cat.png" },
-    { id: "slime",  name: "スライム",       rarity: "r",   weight: 79, image: "images/slime.png" }
+    { id: "ituiyo", name: "いついよ", rarity: "ssr", weight: , image: "images/SSR/Ituiyo.png" },
+    { id: "oidonn", name: "おいどん", rarity: "ssr", weight: , image: "images/SSR/Oidonn.png" },
+    { id: "", name: "", rarity: "ssr", weight: , image: "" },
+    { id: "", name: "", rarity: "ssr", weight: , image: "" },
+    { id: "", name: "", rarity: "ssr", weight: , image: "" },
+    { id: "", name: "", rarity: "ssr", weight: , image: "" },
+    { id: "", name: "", rarity: "ssr", weight: , image: "" },
+    { id: "", name: "", rarity: "ssr", weight: , image: "" },
+    
+    { id: "", name: "", rarity: "sr", weight: , image: "" },
+    { id: "", name: "", rarity: "sr", weight: , image: "" },
+    { id: "", name: "", rarity: "sr", weight: , image: "" },
+    { id: "", name: "", rarity: "sr", weight: , image: "" },
+    { id: "", name: "", rarity: "sr", weight: , image: "" },
+    { id: "", name: "", rarity: "sr", weight: , image: "" },
+    { id: "", name: "", rarity: "sr", weight: , image: "" },
+    { id: "", name: "", rarity: "sr", weight: , image: "" },
+
+    { id: "", name: "", rarity: "r", weight: , image: "" },
+    { id: "", name: "", rarity: "sr", weight: , image: "" },
+    { id: "", name: "", rarity: "sr", weight: , image: "" },
+    { id: "", name: "", rarity: "sr", weight: , image: "" },
+    { id: "", name: "", rarity: "sr", weight: , image: "" },
+    { id: "", name: "", rarity: "sr", weight: , image: "" },
+    { id: "", name: "", rarity: "sr", weight: , image: "" },
+    { id: "", name: "", rarity: "sr", weight: , image: "" },
+    { id: "", name: "", rarity: "sr", weight: , image: "" },
+    { id: "", name: "", rarity: "sr", weight: , image: "" },
+    { id: "", name: "", rarity: "sr", weight: , image: "" },
+    { id: "", name: "", rarity: "sr", weight: , image: "" }
 ];
 
 let collectionCounters = {};
