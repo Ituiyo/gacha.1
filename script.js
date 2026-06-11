@@ -1,34 +1,31 @@
 const CHARACTER_LIST = [
     { id: "ituiyo", name: "いついよ", rarity: "ssr", weight: , image: "images/SSR/Ituiyo.png" },
     { id: "oidonn", name: "おいどん", rarity: "ssr", weight: , image: "images/SSR/Oidonn.png" },
-    { id: "", name: "", rarity: "ssr", weight: , image: "" },
-    { id: "", name: "", rarity: "ssr", weight: , image: "" },
-    { id: "", name: "", rarity: "ssr", weight: , image: "" },
-    { id: "", name: "", rarity: "ssr", weight: , image: "" },
-    { id: "", name: "", rarity: "ssr", weight: , image: "" },
-    { id: "", name: "", rarity: "ssr", weight: , image: "" },
+    { id: "oiko", name: "おい子", rarity: "ssr", weight: , image: "images/SSR/Oiko.png" },
+    { id: "odekunn", name: "おでくん", rarity: "ssr", weight: , image: "images/SSR/Odekunn.png" },
+    { id: "wanikani", name: "わにかに", rarity: "ssr", weight: , image: "images/SSR/Wanikani.png" },
+    { id: "wanipann", name: "わにパン", rarity: "ssr", weight: , image: "images/SSR/Wanipann.png" },
+    { id: "", name: "", rarity: "ssr", weight: , image: "images/SSR/.png" },
+    { id: "", name: "", rarity: "ssr", weight: , image: "images/SSR/.png" },
     
-    { id: "", name: "", rarity: "sr", weight: , image: "" },
-    { id: "", name: "", rarity: "sr", weight: , image: "" },
-    { id: "", name: "", rarity: "sr", weight: , image: "" },
-    { id: "", name: "", rarity: "sr", weight: , image: "" },
-    { id: "", name: "", rarity: "sr", weight: , image: "" },
-    { id: "", name: "", rarity: "sr", weight: , image: "" },
-    { id: "", name: "", rarity: "sr", weight: , image: "" },
-    { id: "", name: "", rarity: "sr", weight: , image: "" },
+    { id: "gachihomo1", name: "がちホモ", rarity: "sr", weight: , image: "images/SR/Gachihomo.png" },
+    { id: "", name: "", rarity: "sr", weight: , image: "images/SR/.png" },
+    { id: "", name: "", rarity: "sr", weight: , image: "images/SR/.png" },
+    { id: "", name: "", rarity: "sr", weight: , image: "images/SR/.png" },
+    { id: "", name: "", rarity: "sr", weight: , image: "images/SR/.png" },
+    { id: "", name: "", rarity: "sr", weight: , image: "images/SR/.png" },
+    { id: "", name: "", rarity: "sr", weight: , image: "images/SR/.png" },
+    { id: "", name: "", rarity: "sr", weight: , image: "images/SR/.png" },
 
-    { id: "", name: "", rarity: "r", weight: , image: "" },
-    { id: "", name: "", rarity: "sr", weight: , image: "" },
-    { id: "", name: "", rarity: "sr", weight: , image: "" },
-    { id: "", name: "", rarity: "sr", weight: , image: "" },
-    { id: "", name: "", rarity: "sr", weight: , image: "" },
-    { id: "", name: "", rarity: "sr", weight: , image: "" },
-    { id: "", name: "", rarity: "sr", weight: , image: "" },
-    { id: "", name: "", rarity: "sr", weight: , image: "" },
-    { id: "", name: "", rarity: "sr", weight: , image: "" },
-    { id: "", name: "", rarity: "sr", weight: , image: "" },
-    { id: "", name: "", rarity: "sr", weight: , image: "" },
-    { id: "", name: "", rarity: "sr", weight: , image: "" }
+    { id: "inumontann", name: "犬もんたん", rarity: "r", weight: , image: "images/R/Inumontann.png" },
+    { id: "", name: "", rarity: "r", weight: , image: "images/R/.png" },
+    { id: "", name: "", rarity: "r", weight: , image: "images/R/.png" },
+    { id: "", name: "", rarity: "r", weight: , image: "images/R/.png" },
+    { id: "", name: "", rarity: "r", weight: , image: "images/R/.png" },
+    { id: "", name: "", rarity: "r", weight: , image: "images/R/.png" },
+    { id: "", name: "", rarity: "r", weight: , image: "images/R/.png" },
+    { id: "", name: "", rarity: "r", weight: , image: "images/R/.png" },
+
 ];
 
 let collectionCounters = {};
@@ -37,9 +34,9 @@ CHARACTER_LIST.forEach(char => { collectionCounters[char.id] = 0; });
 let hasSsrInThisGacha = false;
 let totalGachaCount = 0;
 
-let seClick = new Audio('sounds/click.mp3');
-let seFanfare = new Audio('sounds/fanfare.mp3');
-let bgm = new Audio('sounds/bgm.mp3');
+let seClick = new Audio('sounds/Koukaonn.mp3');
+let seFanfare = new Audio('sounds/Kakuhenn.mp3');
+let bgm = new Audio('sounds/Wanikann.mp3');
 bgm.loop = true; 
 let isBgmPlaying = false;
 
