@@ -3,10 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>演出強化版ガチャゲーム</title>
+    <title>確定演出搭載ガチャゲーム</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+    <div id="kakutei-screen" onclick="closeKakuteiAndStart()">
+        <div class="rainbow-flash"></div>
+        <div class="kakutei-main-text">⚠️ WARNING ⚠️</div>
+        <div class="kakutei-sub-text">✨コンビニにいきたくなってきたな…✨<br>SSR確定！！</div>
+        <p style="color: #fff; font-size: 14px; margin-top: 40px; opacity: 0.7;">画面をタップして召喚を開始する</p>
+    </div>
 
     <div id="gacha-animation-screen" onclick="showNextCard()">
         <div class="animation-container">
