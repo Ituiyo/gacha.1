@@ -2,7 +2,7 @@
 body { 
     font-family: sans-serif; 
     text-align: center; 
-    background-image: "images/images/background/Seimonmae.png"
+    background-image: url('images/images/background/Seimonmae.png'); /* 👈 自分のフォルダ内の画像を指定！ */
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
