@@ -1,49 +1,45 @@
-// ーーー 🌟マスターデータ（ピックアップ設定付き） ーーー
 const CHARACTER_LIST = [
-    // 💡 新しく「pickupWeight」を追加しました！
-    // 同じレア度の中で、この数字が大きいキャラほど「ピックアップ（当たりやすい）」になります。
-    // 特に指定しない（通常確率）なら「1」にしておけばOKです。
-    { id: "a", name: "いついよ", rarity: "ssr", image: "images/SSR/Ituiyo.png", pickupWeight: 1 },
-    { id: "b", name: "おいどん", rarity: "ssr", image: "images/SSR/Oidonn.png", pickupWeight: 1 },
-    { id: "c", name: "おい子", rarity: "ssr", image: "images/SSR/Oiko.png", pickupWeight: 1 },
-    { id: "d", name: "おでくん", rarity: "ssr", image: "images/SSR/Odekunn.png", pickupWeight: 1 },
-    { id: "e", name: "わにかに", rarity: "ssr", image: "images/SSR/Wanikani.png", pickupWeight: 1 },
-    { id: "f", name: "わにかにパンティ", rarity: "ssr", image: "images/SSR/Wanipann.png", pickupWeight: 1 },
-    
-    { id: "A", name: "郷田好男", rarity: "sr", image: "images/SR/Gachihomo1.png", pickupWeight: 1 },
-    { id: "B", name: "祭田武", rarity: "sr", image: "images/SR/Gachihomo2.png", pickupWeight: 1 },
-    { id: "C", name: "美神雄咲", rarity: "sr", image: "images/SR/Gachihomo3.png", pickupWeight: 1 },
-    { id: "D", name: "肩幅広三", rarity: "sr", image: "images/SR/Gachihomo4.png", pickupWeight: 1 },
-    { id: "E", name: "ギルティ村松", rarity: "sr", image: "images/SR/Gachihomo5.png", pickupWeight: 1 },
-    { id: "F", name: "ゴッド四宮", rarity: "sr", image: "images/SR/Gachihomo6.png", pickupWeight: 1 },
-    { id: "G", name: "山下光源", rarity: "sr", image: "images/SR/Gachihomo7.png", pickupWeight: 1 },
-    
-    { id: "1", name: "犬もんたん", rarity: "r", image: "images/R/Inumontann.png", pickupWeight: 1 },
-    { id: "2", name: "豚男", rarity: "r", image: "images/R/Butao.png", pickupWeight: 1 },
-    { id: "3", name: "ミニいついよ", rarity: "r", image: "images/R/MiniItuiyo.png", pickupWeight: 1 },
-    { id: "4", name: "もんた鹿", rarity: "r", image: "images/R/Montajika.png", pickupWeight: 1 },
-    { id: "5", name: "モンタニウス", rarity: "r", image: "images/R/Montaniusu.png", pickupWeight: 1 },
-    { id: "6", name: "ニコニコくん", rarity: "r", image: "images/R/Nikoniko.png", pickupWeight: 1 },
+    { id: "",name: "", rarity: "ssr", image: "images/SSR/.png", pickupWeight: 1 },
+    { id: "",name: "", rarity: "sr", image: "images/SR/.png", pickupWeight: 1 },
+    { id: "",name: "", rarity: "r", image: "images/R/.png", pickupWeight: 1 },
+    { id: "",name: "", rarity: "r", image: "images/R/.png", pickupWeight: 1 }
 ];
 
-// 獲得した回数を記録するデータ
 let collectionCounters = {};
 CHARACTER_LIST.forEach(char => { collectionCounters[char.id] = 0; });
 
 let hasSsrInThisGacha = false;
 let totalGachaCount = 0;
 
+let currentGachaResults = []; 
+let currentCardIndex = 0;     
+
+// 効果音の準備
 let seClick = new Audio('sounds/Koukaonn.mp3');
 let seFanfare = new Audio('sounds/Kakuhenn.mp3');
-let bgm = new Audio('sounds/Wanikann.mp3');
+
+// ーーー 🌟変更：2種類のBGMを用意する ーーー
+let bgm = new Audio('sounds/Wanikann.mp3'); // 通常時のBGM
 bgm.loop = true; 
+
+let gachaBgm = new Audio('sounds/gacha-bgm.mp3'); // 👈 追加：ガチャ演出中の専用BGM
+gachaBgm.loop = true;
+
 let isBgmPlaying = false;
 
-// 起動時に図鑑を自動で作る
 createZukanHTML();
 
+// BGMボタンが押されたとき（通常BGMの再生・停止）
 function toggleBGM() {
-    if (isBgmPlaying) { bgm.pause(); isBgmPlaying = false; } else { bgm.play(); isBgmPlaying = true; }
+    if (isBgmPlaying) { 
+        bgm.pause(); 
+        gachaBgm.pause(); // 念のため両方止める
+        isBgmPlaying = false; 
+    } else { 
+        // ガチャ画面（通常時）なら通常のBGMを再生
+        bgm.play(); 
+        isBgmPlaying = true; 
+    }
 }
 
 function createZukanHTML() {
@@ -60,9 +56,19 @@ function createZukanHTML() {
     });
 }
 
+// ガチャボタンが押されたとき
 function startGacha(count) {
     seClick.currentTime = 0; seClick.play();
-    if (!isBgmPlaying) { bgm.play(); isBgmPlaying = true; }
+
+    // ーーー 🌟重要：ガチャを引いた瞬間、通常BGMを止めて演出用BGMへ切り替える ーーー
+    bgm.pause(); // 通常BGMをストップ
+    bgm.currentTime = 0; // 曲の最初に戻しておく
+
+    if (isBgmPlaying) {
+        gachaBgm.currentTime = 0; // ガチャBGMを最初から
+        gachaBgm.volume = 1.0;     // 音量を100%にする
+        gachaBgm.play();           // ガチャBGMを再生開始！
+    }
 
     totalGachaCount = totalGachaCount + count;
     document.getElementById("total-count").innerText = totalGachaCount;
@@ -71,25 +77,23 @@ function startGacha(count) {
     resultArea.innerHTML = "<div class='loading-text'>⏳ 召喚中...</div>";
     hasSsrInThisGacha = false; 
     
+    currentGachaResults = [];
+    currentCardIndex = 0;
+
     setTimeout(() => {
-        resultArea.innerHTML = ""; 
         for (let i = 0; i < count; i++) {
             let isTenjo = (count === 10 && i === 9);
-            let cardHtml = pullOneGacha(isTenjo);
-            resultArea.innerHTML += cardHtml;
+            let resultData = pullOneGachaLogic(isTenjo);
+            currentGachaResults.push(resultData);
         }
-        updateZukanDisplay();
-
-        if (hasSsrInThisGacha) { triggerCutin("images/images/background/Kakutei.png"); }
+        openAnimationScreen();
     }, 800);
 }
 
-// ーーー 🌟 変更：ピックアップ（重み）対応の2段階抽選 ーーー
-function pullOneGacha(isTenjo) {
+function pullOneGachaLogic(isTenjo) {
     let selectedRarity = "r"; 
     let randomNumber = Math.floor(Math.random() * 100) + 1; 
 
-    // 【第1段階】レア度だけを固定確率で決める（ここは前回と同じ）
     if (isTenjo) {
         if (randomNumber <= 3) { selectedRarity = "ssr"; } else { selectedRarity = "sr"; }
     } else {
@@ -98,22 +102,16 @@ function pullOneGacha(isTenjo) {
         else { selectedRarity = "r"; }
     }
 
-    // 【第2段階】選ばれたレア度のキャラを集めて、「pickupWeight」を元に抽選する
     let matchedChars = CHARACTER_LIST.filter(char => char.rarity === selectedRarity);
-
     if (matchedChars.length === 0) { matchedChars = CHARACTER_LIST; }
 
-    // 対象キャラの pickupWeight の合計値を計算する
     let totalPickupWeight = 0;
     matchedChars.forEach(char => totalPickupWeight += char.pickupWeight);
 
-    // 合計値の中でサイコロを振る
     let charRandomNumber = Math.floor(Math.random() * totalPickupWeight) + 1;
-    
     let selectedChar = null;
     let currentSum = 0;
     
-    // サイコロの目がどこに落ちたかでキャラを決定
     for (let char of matchedChars) {
         currentSum += char.pickupWeight;
         if (charRandomNumber <= currentSum) {
@@ -122,33 +120,133 @@ function pullOneGacha(isTenjo) {
         }
     }
 
-    // 獲得記録を増やす
     collectionCounters[selectedChar.id]++;
     if (selectedChar.rarity === "ssr") { hasSsrInThisGacha = true; }
 
-    let rarityText = selectedChar.rarity.toUpperCase();
-    if (selectedChar.rarity === "ssr") rarityText = "✨SSR✨";
-    if (selectedChar.rarity === "sr") rarityText = "⭐SR⭐";
-
-    return `
-        <div class="char-card rarity-${selectedChar.rarity}">
-            <div>${rarityText}</div>
-            <div><img src="${selectedChar.image}" class="char-img"></div>
-            <div style="font-size: 11px;">${selectedChar.name}</div>
-            ${isTenjo ? "<div style='font-size:9px; background:#e1f5fe; color:#0288d1; border-radius:3px;'>確定枠</div>" : ""}
-        </div>
-    `;
+    return {
+        char: selectedChar,
+        isTenjo: isTenjo
+    };
 }
 
+function openAnimationScreen() {
+    let animScreen = document.getElementById("gacha-animation-screen");
+    animScreen.style.display = "flex";
+    renderBigCard();
+}
+
+function renderBigCard() {
+    let currentData = currentGachaResults[currentCardIndex];
+    let char = currentData.char;
+    
+    let cardElement = document.getElementById("big-char-card");
+    let rarityElement = document.getElementById("big-rarity");
+    let imgElement = document.getElementById("big-img");
+    let nameElement = document.getElementById("big-name");
+    let tenjoElement = document.getElementById("big-tenjo");
+
+    let rarityText = char.rarity.toUpperCase();
+    if (char.rarity === "ssr") rarityText = "✨SSR✨";
+    if (char.rarity === "sr") rarityText = "⭐SR⭐";
+    rarityElement.innerText = rarityText;
+
+    imgElement.src = char.image;
+    nameElement.innerText = char.name;
+
+    if (currentData.isTenjo) { tenjoElement.style.display = "block"; } else { tenjoElement.style.display = "none"; }
+
+    cardElement.className = `char-card rarity-${char.rarity}`;
+    
+    cardElement.style.animation = 'none';
+    cardElement.offsetHeight; 
+    cardElement.style.animation = '';
+}
+
+function showNextCard() {
+    seClick.currentTime = 0; seClick.play();
+    
+    let currentData = currentGachaResults[currentCardIndex];
+    if (currentData.char.rarity === "ssr") {
+        triggerCutin(currentData.char.image);
+    }
+
+    currentCardIndex++;
+
+    if (currentCardIndex < currentGachaResults.length) {
+        renderBigCard();
+    } else {
+        finishAnimation();
+    }
+}
+
+function skipAnimation(event) {
+    event.stopPropagation();
+    seClick.currentTime = 0; seClick.play();
+    finishAnimation();
+}
+
+// ーーー 🌟変更：演出が終わったら、BGMを通常版に戻す ーーー
+function finishAnimation() {
+    document.getElementById("gacha-animation-screen").style.display = "none";
+
+    // 1. ガチャ演出用BGMをストップ
+    gachaBgm.pause();
+    gachaBgm.currentTime = 0;
+
+    // 2. プレイヤーが「BGM再生オン」にしていた場合だけ、通常BGMを鳴らし直す
+    if (isBgmPlaying) {
+        bgm.currentTime = 0;
+        bgm.volume = 1.0;
+        bgm.play();
+    }
+
+    let resultArea = document.getElementById("result-area");
+    resultArea.innerHTML = "";
+
+    currentGachaResults.forEach(data => {
+        let char = data.char;
+        let rarityText = char.rarity.toUpperCase();
+        if (char.rarity === "ssr") rarityText = "✨SSR✨";
+        if (char.rarity === "sr") rarityText = "⭐SR⭐";
+
+        resultArea.innerHTML += `
+            <div class="char-card rarity-${char.rarity}">
+                <div>${rarityText}</div>
+                <div><img src="${char.image}" class="char-img"></div>
+                <div style="font-size: 11px;">${char.name}</div>
+                ${data.isTenjo ? "<div style='font-size:9px; background:#e1f5fe; color:#0288d1; border-radius:3px;'>確定枠</div>" : ""}
+            </div>
+        `;
+    });
+
+    updateZukanDisplay();
+
+    if (hasSsrInThisGacha) {
+        triggerCutin("images/dragon.png");
+    }
+}
+
+// ーーー 🌟変更：SSRカットイン中はガチャBGMだけ音量を下げる ーーー
 function triggerCutin(imagePath) {
-    bgm.volume = 0.3; seFanfare.currentTime = 0; seFanfare.play(); 
+    gachaBgm.volume = 0.3; // ガチャBGMをうっすら小さくする
+    bgm.volume = 0.3;      // スキップでリザルト画面に直行したとき用に通常BGMも小さくする
+
+    seFanfare.currentTime = 0; 
+    seFanfare.play(); 
+    
     let cutinScreen = document.getElementById("cutin-screen");
     let cutinImage = document.getElementById("cutin-image");
-    cutinImage.src = imagePath; cutinScreen.style.display = "flex"; 
+    cutinImage.src = imagePath; 
+    cutinScreen.style.display = "flex"; 
 }
 
 function closeCutin() {
-    document.getElementById("cutin-screen").style.display = "none"; bgm.volume = 1.0;
+    document.getElementById("cutin-screen").style.add
+    document.getElementById("cutin-screen").style.display = "none"; 
+    
+    // カットインが閉じたら音量を元に戻す
+    gachaBgm.volume = 1.0;
+    bgm.volume = 1.0;
 }
 
 function updateZukanDisplay() {
