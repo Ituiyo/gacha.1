@@ -3,10 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UI一新！画面切り替えガチャゲーム</title>
+    <title>演出強化版ガチャゲーム</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+    <div id="gacha-animation-screen" onclick="showNextCard()">
+        <div class="animation-container">
+            <button id="skip-btn" onclick="skipAnimation(event)">⏩ スキップ</button>
+            
+            <div id="big-char-card" class="char-card">
+                <div id="big-rarity"></div>
+                <div><img id="big-img" src="" class="char-img"></div>
+                <div id="big-name" style="font-size: 18px; margin-top: 10px;"></div>
+                <div id="big-tenjo" style="display:none; font-size:12px; background:#e1f5fe; color:#0288d1; border-radius:3px; margin-top:5px;">確定枠</div>
+            </div>
+            <p style="color: white; font-size: 14px; margin-top: 20px;">画面をタップして次へ</p>
+        </div>
+    </div>
 
     <div id="cutin-screen" onclick="closeCutin()">
         <div class="flash-effect"></div>
@@ -53,15 +67,10 @@
     
     <script>
         function switchPage(pageId, buttonElement) {
-            // 1. すべての部屋（page-area）をいったん非表示にする
             let pages = document.querySelectorAll('.page-area');
             pages.forEach(page => page.classList.remove('active'));
-            
-            // 2. すべてのタブボタンから「アクティブ（赤色）」の見た目を消す
             let tabs = document.querySelectorAll('.tab-btn');
             tabs.forEach(tab => tab.classList.remove('active'));
-            
-            // 3. クリックされた部屋と、クリックされたボタンだけを有効（active）にする
             document.getElementById(pageId).classList.add('active');
             buttonElement.classList.add('active');
         }
