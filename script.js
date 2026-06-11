@@ -31,32 +31,21 @@ let totalGachaCount = 0;
 let currentGachaResults = []; 
 let currentCardIndex = 0;     
 
-// 効果音の準備
-let seClick = new Audio('sounds/Koukaonn.mp3');
+let seClick = new Audio('sounds/Koukaonn1.mp3');
 let seFanfare = new Audio('sounds/Kakuhenn.mp3');
 
-// ーーー 🌟変更：2種類のBGMを用意する ーーー
-let bgm = new Audio('sounds/Wanikann.mp3'); // 通常時のBGM
+let bgm = new Audio('sounds/Wanikann.mp3'); 
 bgm.loop = true; 
 
-let gachaBgm = new Audio('sounds/gachabgm.mp3'); // 👈 追加：ガチャ演出中の専用BGM
+let gachaBgm = new Audio('sounds/Gachabgm.mp3'); 
 gachaBgm.loop = true;
 
 let isBgmPlaying = false;
 
 createZukanHTML();
 
-// BGMボタンが押されたとき（通常BGMの再生・停止）
 function toggleBGM() {
-    if (isBgmPlaying) { 
-        bgm.pause(); 
-        gachaBgm.pause(); // 念のため両方止める
-        isBgmPlaying = false; 
-    } else { 
-        // ガチャ画面（通常時）なら通常のBGMを再生
-        bgm.play(); 
-        isBgmPlaying = true; 
-    }
+    if (isBgmPlaying) { bgm.pause(); gachaBgm.pause(); isBgmPlaying = false; } else { bgm.play(); isBgmPlaying = true; }
 }
 
 function createZukanHTML() {
@@ -73,18 +62,16 @@ function createZukanHTML() {
     });
 }
 
-// ガチャボタンが押されたとき
 function startGacha(count) {
     seClick.currentTime = 0; seClick.play();
 
-    // ーーー 🌟重要：ガチャを引いた瞬間、通常BGMを止めて演出用BGMへ切り替える ーーー
-    bgm.pause(); // 通常BGMをストップ
-    bgm.currentTime = 0; // 曲の最初に戻しておく
+    bgm.pause(); 
+    bgm.currentTime = 0; 
 
     if (isBgmPlaying) {
-        gachaBgm.currentTime = 0; // ガチャBGMを最初から
-        gachaBgm.volume = 1.0;     // 音量を100%にする
-        gachaBgm.play();           // ガチャBGMを再生開始！
+        gachaBgm.currentTime = 0; 
+        gachaBgm.volume = 1.0;     
+        gachaBgm.play();           
     }
 
     totalGachaCount = totalGachaCount + count;
@@ -98,12 +85,22 @@ function startGacha(count) {
     currentCardIndex = 0;
 
     setTimeout(() => {
+        // 1. 内部で一気にガチャの結果を生成
         for (let i = 0; i < count; i++) {
             let isTenjo = (count === 10 && i === 9);
             let resultData = pullOneGachaLogic(isTenjo);
             currentGachaResults.push(resultData);
         }
-        openAnimationScreen();
+
+        // ーーー 🌟ここが最大の変更点：1枚目を出す前の「確定演出」ジャッジ ーーー
+        if (hasSsrInThisGacha) {
+            // SSRが1枚でもあるなら、まずは確定前兆画面を表示！
+            openKakuteiScreen();
+        } else {
+            // SSRがなければ、通常通りそのまま1体目の大画面を開く
+            openAnimationScreen();
+        }
+
     }, 800);
 }
 
@@ -131,24 +128,48 @@ function pullOneGachaLogic(isTenjo) {
     
     for (let char of matchedChars) {
         currentSum += char.pickupWeight;
-        if (charRandomNumber <= currentSum) {
-            selectedChar = char;
-            break;
-        }
+        if (charRandomNumber <= currentSum) { selectedChar = char; break; }
     }
 
     collectionCounters[selectedChar.id]++;
-    if (selectedChar.rarity === "ssr") { hasSsrInThisGacha = true; }
+    
+    // 🌟ここで今回の10連の中にSSRがあるかを検知！
+    if (selectedChar.rarity === "ssr") { 
+        hasSsrInThisGacha = true; 
+    }
 
-    return {
-        char: selectedChar,
-        isTenjo: isTenjo
-    };
+    return { char: selectedChar, isTenjo: isTenjo };
+}
+
+// ーーー 🌟追加：確定前兆画面を表示する ーーー
+function openKakuteiScreen() {
+    // ファンファーレ（または専用の効果音）を鳴らす
+    seFanfare.currentTime = 0;
+    seFanfare.play();
+
+    let kakuteiScreen = document.getElementById("kakutei-screen");
+    kakuteiScreen.style.display = "flex";
+}
+
+// ーーー 🌟追加：確定前兆画面をタップして閉じた時、ガチャ本編を開始する ーーー
+function closeKakuteiAndStart() {
+    document.getElementById("kakutei-screen").style.display = "none";
+    // ガチャ本編（1枚ずつの表示画面）へ
+    openAnimationScreen();
 }
 
 function openAnimationScreen() {
     let animScreen = document.getElementById("gacha-animation-screen");
     animScreen.style.display = "flex";
+    
+    // ーーー 🌟重要：SSRがある場合は、スキップボタンを非表示にして強制的に見せる！ ーーー
+    let skipBtn = document.getElementById("skip-btn");
+    if (hasSsrInThisGacha) {
+        skipBtn.style.display = "none";  // 👈 スキップ不可にする！
+    } else {
+        skipBtn.style.display = "block"; // 通常は表示
+    }
+
     renderBigCard();
 }
 
@@ -183,6 +204,8 @@ function showNextCard() {
     seClick.currentTime = 0; seClick.play();
     
     let currentData = currentGachaResults[currentCardIndex];
+    
+    // 🌟変更：1枚前のジャッジではなく、SSRのカードそのものが表示された「まさにその瞬間」に個別カットインを出す
     if (currentData.char.rarity === "ssr") {
         triggerCutin(currentData.char.image);
     }
@@ -202,15 +225,12 @@ function skipAnimation(event) {
     finishAnimation();
 }
 
-// ーーー 🌟変更：演出が終わったら、BGMを通常版に戻す ーーー
 function finishAnimation() {
     document.getElementById("gacha-animation-screen").style.display = "none";
 
-    // 1. ガチャ演出用BGMをストップ
     gachaBgm.pause();
     gachaBgm.currentTime = 0;
 
-    // 2. プレイヤーが「BGM再生オン」にしていた場合だけ、通常BGMを鳴らし直す
     if (isBgmPlaying) {
         bgm.currentTime = 0;
         bgm.volume = 1.0;
@@ -237,16 +257,12 @@ function finishAnimation() {
     });
 
     updateZukanDisplay();
-
-    if (hasSsrInThisGacha) {
-        triggerCutin("images/images/background/Kakutei.png");
-    }
+    // 🌟変更：個別演出を完璧にしたため、リザルト画面でのカットイン重複は削除しました
 }
 
-// ーーー 🌟変更：SSRカットイン中はガチャBGMだけ音量を下げる ーーー
 function triggerCutin(imagePath) {
-    gachaBgm.volume = 0.3; // ガチャBGMをうっすら小さくする
-    bgm.volume = 0.3;      // スキップでリザルト画面に直行したとき用に通常BGMも小さくする
+    gachaBgm.volume = 0.3; 
+    bgm.volume = 0.3;      
 
     seFanfare.currentTime = 0; 
     seFanfare.play(); 
@@ -258,10 +274,7 @@ function triggerCutin(imagePath) {
 }
 
 function closeCutin() {
-    document.getElementById("cutin-screen").style.add
     document.getElementById("cutin-screen").style.display = "none"; 
-    
-    // カットインが閉じたら音量を元に戻す
     gachaBgm.volume = 1.0;
     bgm.volume = 1.0;
 }
