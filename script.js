@@ -9,8 +9,6 @@ const CHARACTER_LIST = [
     { id: "d", name: "おでくん", rarity: "ssr", image: "images/SSR/Odekunn.png", pickupWeight: 1 },
     { id: "e", name: "わにかに", rarity: "ssr", image: "images/SSR/Wanikani.png", pickupWeight: 1 },
     { id: "f", name: "わにかにパンティ", rarity: "ssr", image: "images/SSR/Wanipann.png", pickupWeight: 1 },
-    { id: "g", name: "", rarity: "ssr", image: "images/SSR/.png", pickupWeight: 1 },
-    { id: "h", name: "", rarity: "ssr", image: "images/SSR/.png", pickupWeight: 1 },
     
     { id: "A", name: "郷田好男", rarity: "sr", image: "images/SR/Gachihomo1.png", pickupWeight: 1 },
     { id: "B", name: "祭田武", rarity: "sr", image: "images/SR/Gachihomo2.png", pickupWeight: 1 },
@@ -19,17 +17,13 @@ const CHARACTER_LIST = [
     { id: "E", name: "ギルティ村松", rarity: "sr", image: "images/SR/Gachihomo5.png", pickupWeight: 1 },
     { id: "F", name: "ゴッド四宮", rarity: "sr", image: "images/SR/Gachihomo6.png", pickupWeight: 1 },
     { id: "G", name: "山下光源", rarity: "sr", image: "images/SR/Gachihomo7.png", pickupWeight: 1 },
-    { id: "H", name: "", rarity: "sr", image: "images/SR/.png", pickupWeight: 1 },
-    { id: "I", name: "", rarity: "sr", image: "images/SR/.png", pickupWeight: 1 },
     
-    { id: "1", name: "犬もんたん", rarity: "r", image: "images/R/Inumonntann.png", pickupWeight: 1 },
+    { id: "1", name: "犬もんたん", rarity: "r", image: "images/R/Inumontann.png", pickupWeight: 1 },
     { id: "2", name: "豚男", rarity: "r", image: "images/R/Butao.png", pickupWeight: 1 },
-    { id: "3", name: "ミニいついよ", rarity: "r", image: "images/R/Miniituiyo.png", pickupWeight: 1 },
+    { id: "3", name: "ミニいついよ", rarity: "r", image: "images/R/MiniItuiyo.png", pickupWeight: 1 },
     { id: "4", name: "もんた鹿", rarity: "r", image: "images/R/Montajika.png", pickupWeight: 1 },
     { id: "5", name: "モンタニウス", rarity: "r", image: "images/R/Montaniusu.png", pickupWeight: 1 },
     { id: "6", name: "ニコニコくん", rarity: "r", image: "images/R/Nikoniko.png", pickupWeight: 1 },
-    { id: "7", name: "", rarity: "r", image: "images/R/.png", pickupWeight: 1 },
-    { id: "8", name: "", rarity: "r", image: "images/R/.png", pickupWeight: 1 },
 ];
 
 // 獲得した回数を記録するデータ
